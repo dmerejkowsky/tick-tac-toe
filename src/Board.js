@@ -10,7 +10,7 @@ export function Board({ xIsNext, squares, onPlay }) {
     }
 
     function makeRow(index) {
-        return <BoardRow squares={squares} rowNumber={index} onSquareClick={handleClick} />;
+        return <BoardRow key={index} squares={squares} rowNumber={index} onSquareClick={handleClick} />;
     }
 
     return <>
