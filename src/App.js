@@ -15,11 +15,17 @@ export default function Game() {
         setHistory(nextHistory)
 
         const winner = calculateWinner(nextSquares)
+        const occuppied = nextSquares.filter(x => x != null).length
+
         if (winner) {
             setStatus(`Winner: ${winner}`)
             setGameOver(true)
-            return
-        } else {
+        }
+        else if (occuppied === nextSquares.length) {
+            setStatus('Draw')
+            setGameOver(true)
+        }
+        else {
             setStatus(`Next player: ${xIsNext ? 'X' : 'O'}`)
         }
     }
