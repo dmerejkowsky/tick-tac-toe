@@ -7,15 +7,17 @@ export default function Game() {
     const [history, setHistory] = useState([Array(9).fill(null)])
     const [status, setStatus] = useState('First player: O')
     const [gameOver, setGameOver] = useState(false)
-    counst[currentMove, setCurrentMove] = useState(0)
+    const [currentMove, setCurrentMove] = useState(0)
 
     function handlePlay(nextSquares) {
+        const nextHistory = [...history.slice(0, currentMove + 1), nextSquares]
+        setHistory(nextHistory)
+        setCurrentMove(nextHistory.length - 1)
+
         if (gameOver) {
             return
         }
         setXIsNext(!xIsNext)
-        const nextHistory = [...history, nextSquares]
-        setHistory(nextHistory)
 
         const { winner, draw } = getGameStatus(nextSquares)
         if (winner) {
@@ -32,10 +34,11 @@ export default function Game() {
     }
 
     function jumpTo(nextMove) {
-        console.log(`Going to move #${nextMove}`)
+        setCurrentMove(nextMove)
+        setXIsNext(nextMove % 2 === 0)
     }
-
-    const currentSquares = history[history.length - 1];
+    const xIsNex = currentMove
+    const currentSquares = history[currentMove]
 
     const moves = history.map((squares, move) => {
         let description
@@ -45,9 +48,8 @@ export default function Game() {
             description = 'Go to start'
         }
         return (
-            <li>
+            <li key={move}>
                 <button
-                    key={move}
                     onClick={() => jumpTo(move)}
                 >
                     {description}
