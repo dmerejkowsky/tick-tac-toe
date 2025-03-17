@@ -3,34 +3,58 @@ import { Board } from "./Board";
 
 
 export default function Game() {
-    const [xIsNext, setXIsNext] = useState(true);
-    const [history, setHistory] = useState([Array(9).fill(null)]);
-    const [status, setStatus] = useState('First player: O');
-    const [gameOver, setGameOver] = useState(false);
+    const [xIsNext, setXIsNext] = useState(true)
+    const [history, setHistory] = useState([Array(9).fill(null)])
+    const [status, setStatus] = useState('First player: O')
+    const [gameOver, setGameOver] = useState(false)
+    counst[currentMove, setCurrentMove] = useState(0)
 
     function handlePlay(nextSquares) {
         if (gameOver) {
-            return;
+            return
         }
-        setXIsNext(!xIsNext);
-        const nextHistory = [...history, nextSquares];
-        setHistory(nextHistory);
+        setXIsNext(!xIsNext)
+        const nextHistory = [...history, nextSquares]
+        setHistory(nextHistory)
 
-        const { winner, draw } = getGameStatus(nextSquares);
+        const { winner, draw } = getGameStatus(nextSquares)
         if (winner) {
-            setStatus(`Winner: ${winner}`);
-            setGameOver(true);
+            setStatus(`Winner: ${winner}`)
+            setGameOver(true)
         }
         else if (draw) {
-            setStatus('Draw');
-            setGameOver(true);
+            setStatus('Draw')
+            setGameOver(true)
         }
         else {
-            setStatus(`Next player: ${xIsNext ? 'X' : 'O'}`);
+            setStatus(`Next player: ${xIsNext ? 'X' : 'O'}`)
         }
     }
 
+    function jumpTo(nextMove) {
+        console.log(`Going to move #${nextMove}`)
+    }
+
     const currentSquares = history[history.length - 1];
+
+    const moves = history.map((squares, move) => {
+        let description
+        if (move > 0) {
+            description = `Go to move #${move}`
+        } else {
+            description = 'Go to start'
+        }
+        return (
+            <li>
+                <button
+                    key={move}
+                    onClick={() => jumpTo(move)}
+                >
+                    {description}
+                </button>
+            </li>
+        )
+    })
 
     return (
         <div className="game">
@@ -39,7 +63,7 @@ export default function Game() {
                 {status}
             </div>
             <div className="game-info">
-                <ol>{/*TODO*/}</ol>
+                <ol>{moves}</ol>
             </div>
         </div>
     );
@@ -73,10 +97,10 @@ function calculateWinner(squares) {
         [2, 4, 6]
     ];
     for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
+        const [a, b, c] = lines[i]
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
+            return squares[a]
         }
     }
-    return null;
+    return null
 }
