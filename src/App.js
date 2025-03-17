@@ -56,10 +56,11 @@ export function Board({ xIsNext, squares, onPlay }) {
         onPlay(nextSquares)
     }
 
+    const rows = [0, 1, 2].map(index =>
+        <BoardRow squares={squares} rowNumber={index} onSquareClick={handleClick} />
+    )
     return <>
-        <BoardRow squares={squares} rowNumber={0} onSquareClick={handleClick} />
-        <BoardRow squares={squares} rowNumber={1} onSquareClick={handleClick} />
-        <BoardRow squares={squares} rowNumber={2} onSquareClick={handleClick} />
+        {rows}
     </>
 }
 
