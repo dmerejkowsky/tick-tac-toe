@@ -14,14 +14,12 @@ export default function Game() {
         const nextHistory = [...history, nextSquares]
         setHistory(nextHistory)
 
-        const winner = calculateWinner(nextSquares)
-        const occuppied = nextSquares.filter(x => x != null).length
-
+        const { winner, draw } = getGameStatus(nextSquares)
         if (winner) {
             setStatus(`Winner: ${winner}`)
             setGameOver(true)
         }
-        else if (occuppied === nextSquares.length) {
+        else if (draw) {
             setStatus('Draw')
             setGameOver(true)
         }
@@ -86,6 +84,22 @@ function Square({ value, onSquareClick }) {
         {value}
     </button>
 }
+
+// Returns { winner?: string, draw?: boolean, inProgress?: boolean }
+function getGameStatus(squares) {
+    const winner = calculateWinner(squares)
+    if (winner) {
+        return { winner }
+    }
+    const occuppied = squares.filter(x => x != null).length
+    const isDraw = occuppied === squares.length
+    if (isDraw) {
+        return { draw: true }
+    }
+
+    return { inProgress: true }
+}
+
 
 function calculateWinner(squares) {
     const lines = [
